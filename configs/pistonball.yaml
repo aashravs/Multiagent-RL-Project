@@ -1,0 +1,22 @@
+env:
+  env_name: "pistonball_v6"
+  frame_stack: 1          # ↓ memory instantly
+  time_limit: 300         # fewer frames = smaller rollouts
+  render_mode: null
+  num_envs: 1             # HUGE memory saver
+
+ppo:
+  total_timesteps: 60000  # more than enough to get results
+  learning_rate: 0.0003
+  n_steps: 512            # half memory consumption
+  batch_size: 128         # smaller batches = smaller RAM load
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.2
+  ent_coef: 0.0
+  vf_coef: 0.5
+
+log_dir: "runs/pistonball_shared"
+wandb_project: null
+save_every_steps: 50000   # but checkpointing is disabled in your train file anyway
+eval_episodes: 3

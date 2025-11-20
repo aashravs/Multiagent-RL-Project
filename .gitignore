@@ -1,0 +1,27 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environment
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Training outputs
+runs/
+*/runs/
+*.zip
+
+# Logs
+*.log
+
+# Cache
+.cache/
+**/__pycache__/
+
+# OS garbage
+.DS_Store
+Thumbs.db
