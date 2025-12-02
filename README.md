@@ -49,38 +49,43 @@ Example demo included (runs/example_demo/)
 2. Repository Structure
 .
 ├── agents/
-│   ├── ppo_shared.py                # Shared-policy PPO agent
-│   └── ppo_independent.py           # Independent PPO agents
+│   ├── ppo_shared.py               # Shared-policy PPO implementation
+│   └── ppo_independent.py          # Independent-policy PPO implementation
 │
 ├── configs/
-│   ├── pistonball.yaml              # Hyperparameters for Pistonball
-│   └── simple_tag.yaml              # Hyperparameters for Simple Tag
+│   ├── pistonball.yaml             # Hyperparameters for Pistonball
+│   └── simple_tag.yaml             # Hyperparameters for Simple Tag
 │
 ├── envs/
-│   └── make_env.py                  # PettingZoo environment factory
+│   └── make_env.py                 # Environment factory (PettingZoo + SuperSuit)
 │
 ├── eval/
-│   └── evaluate.py                  # Evaluation + metrics + replay
+│   └── evaluate.py                 # Evaluation + metrics.csv + replay.gif generator
 │
 ├── runs/
-│   ├── example_demo/                # Pre-generated demo (gif + CSV)
-│   ├── pistonball_shared/
+│   ├── example_demo/               # Pre-generated demo for UI preview
+│   │   ├── replay.gif
+│   │   └── metrics.csv
+│   │
+│   ├── pistonball_shared/          # Saved outputs (if saving enabled)
 │   └── simple_tag_shared/
 │
 ├── scripts/
-│   └── make_demo_replay.py          # Helper script for generating demo assets
+│   └── make_demo_replay.py         # Helper script to generate small demo assets
 │
 ├── training/
-│   ├── train_shared.py              # Shared PPO training
-│   └── train_independent.py         # Independent PPO training
+│   ├── train_shared.py             # Shared PPO training loop
+│   └── train_independent.py        # Independent PPO training loop
 │
 ├── utils/
-│   ├── config.py                    # YAML -> config dataclass loader
-│   ├── wrappers.py                  # JointObsActionWrapper, etc.
-│   ├── buffers.py
-│   └── video.py                     # GIF generation utilities
+│   ├── config.py                   # YAML → config dataclass
+│   ├── wrappers.py                 # Joint observation/action wrappers
+│   ├── buffers.py                  # Replay buffers
+│   └── video.py                    # GIF/video utilities
 │
-└── streamlit_app.py                 # Web UI
+├── streamlit_app.py                # Interactive web UI for training/evaluation
+├── requirements.txt                # Python dependencies
+└── README.md
 
 3. Installation
 3.1 Clone the repository
