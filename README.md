@@ -46,61 +46,22 @@ Downloading checkpoints
 
 Example demo included (runs/example_demo/)
 
-2. Repository Structure
-.
-├── agents/
-│   ├── ppo_shared.py               # Shared-policy PPO implementation
-│   └── ppo_independent.py          # Independent-policy PPO implementation
-│
-├── configs/
-│   ├── pistonball.yaml             # Hyperparameters for Pistonball
-│   └── simple_tag.yaml             # Hyperparameters for Simple Tag
-│
-├── envs/
-│   └── make_env.py                 # Environment factory (PettingZoo + SuperSuit)
-│
-├── eval/
-│   └── evaluate.py                 # Evaluation + metrics.csv + replay.gif generator
-│
-├── runs/
-│   ├── example_demo/               # Pre-generated demo for UI preview
-│   │   ├── replay.gif
-│   │   └── metrics.csv
-│   │
-│   ├── pistonball_shared/          # Saved outputs (if saving enabled)
-│   └── simple_tag_shared/
-│
-├── scripts/
-│   └── make_demo_replay.py         # Helper script to generate small demo assets
-│
-├── training/
-│   ├── train_shared.py             # Shared PPO training loop
-│   └── train_independent.py        # Independent PPO training loop
-│
-├── utils/
-│   ├── config.py                   # YAML → config dataclass
-│   ├── wrappers.py                 # Joint observation/action wrappers
-│   ├── buffers.py                  # Replay buffers
-│   └── video.py                    # GIF/video utilities
-│
-├── streamlit_app.py                # Interactive web UI for training/evaluation
-├── requirements.txt                # Python dependencies
-└── README.md
 
-3. Installation
-3.1 Clone the repository
+
+2. Installation
+2.1 Clone the repository
 git clone https://github.com/aashravs/Multiagent-RL-Project.git
 cd Multiagent-RL-Project
 
-3.2 Create virtual environment
+2.2 Create virtual environment
 python -m venv venv
 venv\Scripts\activate        # Windows
 source venv/bin/activate    # macOS/Linux
 
-3.3 Install dependencies
+2.3 Install dependencies
 pip install -r requirements.txt
 
-4. Quick Demo (No Training Required)
+3. Quick Demo (No Training Required)
 
 The folder runs/example_demo/ provides:
 
@@ -131,8 +92,8 @@ Replay GIF
 
 This is suitable for demonstrations where compute time is limited.
 
-5. Training
-5.1 Shared-Policy PPO (default)
+4. Training
+4.1 Shared-Policy PPO (default)
 
 Train Pistonball:
 
@@ -143,10 +104,10 @@ Train Simple Tag:
 
 python -m training.train_shared --config configs/simple_tag.yaml
 
-5.2 Independent PPO
+4.2 Independent PPO
 python -m training.train_independent --config configs/pistonball.yaml
 
-5.3 Controlling Checkpoint Saving
+4.3 Controlling Checkpoint Saving
 
 To avoid large .zip files filling disk space:
 
@@ -160,7 +121,7 @@ Enable saving (default):
 
 set NO_SAVE=0
 
-6. Evaluation
+5. Evaluation
 
 Evaluation computes per-episode returns and generates a replay animation.
 
@@ -177,7 +138,7 @@ Outputs appear under the corresponding run directory:
 runs/<run_name>/metrics.csv
 runs/<run_name>/replay.gif
 
-7. Streamlit Dashboard
+6. Streamlit Dashboard
 
 Start:
 
@@ -201,8 +162,8 @@ Display summary tables
 
 Download model checkpoints
 
-8. Methodology
-8.1 Environment Processing
+7. Methodology
+7.1 Environment Processing
 
 PettingZoo parallel API
 
@@ -216,7 +177,7 @@ normalization
 
 frame stacking
 
-8.2 Shared-Policy PPO
+7.2 Shared-Policy PPO
 
 A single PPO network controls all agents.
 The environment is wrapped using:
@@ -238,7 +199,7 @@ fewer parameters
 
 simpler training
 
-8.3 Independent PPO
+7.3 Independent PPO
 
 Each agent:
 
@@ -252,7 +213,7 @@ competitive tasks
 
 asymmetric roles
 
-8.4 Configuration System
+7.4 Configuration System
 
 Hyperparameters stored in YAML:
 
@@ -268,7 +229,7 @@ GAE lambda
 
 clip_range
 
-9. Example Results (Demo)
+8. Example Results (Demo)
 
 For the included example:
 
@@ -281,7 +242,7 @@ These values are written into:
 
 runs/example_demo/metrics.csv
 
-10. Limitations and Future Work
+9. Limitations and Future Work
 Limitations
 
 CPU training is slow for large MARL environments
@@ -302,7 +263,7 @@ Multi-run comparison interface
 
 More stable replay recording for large environments
 
-11. License
+10. License
 
 This project is licensed under the MIT License.
 You are free to use, modify, and redistribute the code.
