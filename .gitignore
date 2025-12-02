@@ -10,18 +10,18 @@ venv/
 .vscode/
 .idea/
 
-# Training outputs (ignored)
+# Training outputs (ignored by default)
 runs/
 
-# BUT allow demo assets
+# Allow the example demo folder inside runs/
 !runs/example_demo/
 !runs/example_demo/*
+!runs/example_demo/*.gif
+!runs/example_demo/*.csv
+!runs/example_demo/*.zip
 
 # Ignore model weights (these get huge)
 *.zip
-
-# But allow zip files inside the example_demo folder
-!runs/example_demo/*.zip
 
 # Logs
 *.log
@@ -33,8 +33,3 @@ runs/
 # OS junk
 .DS_Store
 Thumbs.db
-# Allow tiny demo example to be committed
-!runs/example_demo/
-!runs/example_demo/*
-!runs/example_demo/*.gif
-!runs/example_demo/*.csv
