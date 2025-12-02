@@ -1,272 +1,303 @@
-Multi-Agent Reinforcement Learning: Shared-Policy PPO Framework
+Multi-Agent Reinforcement Learning Framework (PPO + PettingZoo)
 
-This project implements a clean, modular Multi-Agent Reinforcement Learning (MARL) framework using PPO (Proximal Policy Optimization) for both shared-policy and independent-policy setups.
-It supports two PettingZoo environments:
+This project implements a modular framework for Multi-Agent Reinforcement Learning (MARL) using Proximal Policy Optimization (PPO).
+It supports both shared-policy (one policy controlling all agents) and independent-policy (each agent trains separately) setups.
 
-Pistonball (cooperative, continuous dynamics)
+Two PettingZoo environments are currently integrated:
 
-Simple Tag (mixed cooperative/competitive)
+Pistonball — cooperative continuous-control task
 
-A full Streamlit UI is provided to train, evaluate, visualize metrics, and play stored replays — making the entire project presentable and interactive for demonstration.
+Simple Tag — mixed cooperative/competitive task
 
-Features
+A Streamlit dashboard is included for training, evaluation, visualization of metrics, and replay playback.
 
-Shared PPO training (one neural policy controlling all agents)
+1. Project Features
+1.1 Reinforcement Learning
 
-Independent PPO training (each agent has its own policy)
+Shared-policy PPO
 
-PettingZoo + SuperSuit wrappers
+Independent-agent PPO
 
-Training & evaluation pipelines
+PettingZoo parallel API
 
-Automatic metric logging (metrics.csv)
+SuperSuit wrappers for preprocessing
 
-Replay generation (replay.gif)
+Joint observation/action wrapper for shared policy
 
-Streamlit UI dashboard for:
+1.2 Tooling & Logging
 
-launching training/evaluation
+Evaluation script outputs:
 
-viewing metrics
+metrics.csv (per-episode returns)
 
-viewing downloadable GIF replays
+replay.gif (episode visualization)
 
-model selection and override paths
+Streamlit UI for:
+
+Running training
+
+Running evaluation
+
+Viewing metrics plots
+
+Viewing GIF replays
+
+Downloading checkpoints
 
 Example demo included (runs/example_demo/)
 
-replay.gif
-
-metrics.csv
-
-Works instantly without training anything
-
-Repository Structure
+2. Repository Structure
 .
-├── agents/                 # PPO implementations (shared & independent)
-│   ├── ppo_shared.py
-│   └── ppo_independent.py
+├── agents/
+│   ├── ppo_shared.py                # Shared-policy PPO agent
+│   └── ppo_independent.py           # Independent PPO agents
 │
-├── configs/                # YAML configuration files
-│   ├── pistonball.yaml
-│   └── simple_tag.yaml
+├── configs/
+│   ├── pistonball.yaml              # Hyperparameters for Pistonball
+│   └── simple_tag.yaml              # Hyperparameters for Simple Tag
 │
-├── envs/                   # PettingZoo environment factory
-│   └── make_env.py
+├── envs/
+│   └── make_env.py                  # PettingZoo environment factory
 │
-├── eval/                   # Evaluation script
-│   └── evaluate.py
+├── eval/
+│   └── evaluate.py                  # Evaluation + metrics + replay
 │
 ├── runs/
-│   ├── example_demo/       # Small demo (pre-generated replay + metrics)
-│   │   ├── replay.gif
-│   │   └── metrics.csv
+│   ├── example_demo/                # Pre-generated demo (gif + CSV)
 │   ├── pistonball_shared/
 │   └── simple_tag_shared/
 │
 ├── scripts/
-│   └── make_demo_replay.py # Helper script for generating tiny demo assets
+│   └── make_demo_replay.py          # Helper script for generating demo assets
 │
 ├── training/
-│   ├── train_shared.py
-│   └── train_independent.py
+│   ├── train_shared.py              # Shared PPO training
+│   └── train_independent.py         # Independent PPO training
 │
-├── utils/                  # Buffers, wrappers, config loader, video writer
+├── utils/
+│   ├── config.py                    # YAML -> config dataclass loader
+│   ├── wrappers.py                  # JointObsActionWrapper, etc.
+│   ├── buffers.py
+│   └── video.py                     # GIF generation utilities
 │
-└── streamlit_app.py        # Full Web UI
+└── streamlit_app.py                 # Web UI
 
-Installation & Setup
-1. Clone the repository
+3. Installation
+3.1 Clone the repository
 git clone https://github.com/aashravs/Multiagent-RL-Project.git
 cd Multiagent-RL-Project
 
-2. Create a virtual environment
+3.2 Create virtual environment
 python -m venv venv
-source venv/bin/activate      # macOS/Linux
-venv\Scripts\activate         # Windows
+venv\Scripts\activate        # Windows
+source venv/bin/activate    # macOS/Linux
 
-3. Install dependencies
+3.3 Install dependencies
 pip install -r requirements.txt
 
-Quick Demo (No Training Required)
+4. Quick Demo (No Training Required)
 
-If you want to show the project immediately, this demo folder has valid metrics + a working replay:
+The folder runs/example_demo/ provides:
 
-runs/example_demo/
-    - replay.gif  
-    - metrics.csv
+replay.gif — simple visual demonstration
 
-Launch UI
+metrics.csv — example metrics
+
+This allows the UI to run without training any models.
+
+Launch Streamlit:
 streamlit run streamlit_app.py
 
 
-Then in the sidebar, select:
+In the sidebar, choose:
 
 Run → example_demo
 
 
-You will instantly see:
+You will see:
 
-a replay animation
+Metrics plot
 
-plotted metrics
+Episode table
 
-summary statistics
+Mean & standard deviation
 
-Perfect for demonstrations.
+Replay GIF
 
-Training
-Train Shared-Policy PPO on Pistonball
+This is suitable for demonstrations where compute time is limited.
+
+5. Training
+5.1 Shared-Policy PPO (default)
+
+Train Pistonball:
+
 python -m training.train_shared --config configs/pistonball.yaml
 
-Train Shared-Policy PPO on Simple Tag
+
+Train Simple Tag:
+
 python -m training.train_shared --config configs/simple_tag.yaml
 
-About NO_SAVE
+5.2 Independent PPO
+python -m training.train_independent --config configs/pistonball.yaml
 
-To prevent filling your disk with hundreds of checkpoints, the training script disables model.save() when the environment variable is set:
+5.3 Controlling Checkpoint Saving
 
-set NO_SAVE=1        # Windows
-export NO_SAVE=1     # macOS/Linux
+To avoid large .zip files filling disk space:
+
+Disable saving:
+
+set NO_SAVE=1          # Windows
+export NO_SAVE=1       # macOS/Linux
 
 
-This keeps your storage safe.
+Enable saving (default):
 
-Evaluation (also generates replay.gif)
-Evaluate a trained model
+set NO_SAVE=0
+
+6. Evaluation
+
+Evaluation computes per-episode returns and generates a replay animation.
+
+Example:
+
 python -m eval.evaluate \
     --model runs/pistonball_shared/final_model.zip \
     --config configs/pistonball.yaml \
     --episodes 5
 
 
-This automatically generates:
+Outputs appear under the corresponding run directory:
 
 runs/<run_name>/metrics.csv
 runs/<run_name>/replay.gif
 
-Streamlit UI Guide
+7. Streamlit Dashboard
 
-Launch with:
+Start:
 
 streamlit run streamlit_app.py
 
-UI Capabilities
+Dashboard Capabilities
 
-Train models (Pistonball / Simple Tag)
+Train Pistonball or Simple Tag
 
 Evaluate models
 
-Real-time logs while training
+View training/evaluation logs live
 
-Replay viewer
+Select any run directory
 
-Metrics visualizer
+Render replay GIF
 
-Downloadable checkpoint button
+Plot metrics (step-based or episode-based)
 
-Model override path input (load any .zip)
+Display summary tables
 
-Run selector
+Download model checkpoints
 
-Pick any folder inside runs/ to view:
+8. Methodology
+8.1 Environment Processing
 
-metrics plot
+PettingZoo parallel API
 
-metrics table
-
-mean/stdev return
-
-replay GIF
-
-file list
-
-Methodology & Architecture
-Environments
-
-PettingZoo environments wrapped in SuperSuit:
-
-frame stacking
+SuperSuit preprocessing:
 
 resizing
 
+grayscale
+
 normalization
 
-vectorization
+frame stacking
 
-Shared Policy PPO
+8.2 Shared-Policy PPO
 
-All agents share:
+A single PPO network controls all agents.
+The environment is wrapped using:
 
-same neural network
+JointObsActionWrapper
 
-same optimizer
 
-same PPO update
+which:
 
-Independent PPO
+concatenates all agent observations
 
-Each agent trains individually:
+outputs a joint action vector
 
-slower
+Advantages:
 
-more flexible
+consistent coordination
 
-better for competitive tasks
+fewer parameters
 
-Config-Driven System
+simpler training
 
-All hyperparameters live in configs/*.yaml:
+8.3 Independent PPO
+
+Each agent:
+
+has its own PPO model
+
+trains separately in a round-robin cycle
+
+Useful for:
+
+competitive tasks
+
+asymmetric roles
+
+8.4 Configuration System
+
+Hyperparameters stored in YAML:
 
 learning rate
 
 batch size
 
+n_steps
+
 gamma
 
-gae lambda
+GAE lambda
 
-PPO clip range
+clip_range
 
-total timesteps
+9. Example Results (Demo)
 
-Outputs
+For the included example:
 
-Every evaluation writes:
-
-metrics.csv    # episode returns
-replay.gif     # visual rollout
-
-Example Results (Demo)
-
-The included demo has:
-
-Mean return: 548.76
-Std: 230.18
 Episodes: 5
+Mean return: 548.76
+Standard deviation: 230.18
 
 
-Replay: a moving white square (tiny handcrafted environment used only for preview).
+These values are written into:
 
-Limitations & Future Work
+runs/example_demo/metrics.csv
 
-Training PPO for many timesteps can be slow on CPU.
+10. Limitations and Future Work
+Limitations
 
-Replay recording for 20+ agents can get heavy.
+CPU training is slow for large MARL environments
 
-No hyperparameter sweeps yet.
+Replay generation for many agents can be expensive
 
-No multi-environment dashboard support yet.
+No hyperparameter sweep or tuning tools included
 
-Planned:
+Shared-policy PPO may underperform on competitive tasks
 
-Independent vs shared performance comparison
+Planned Improvements
 
-More PettingZoo environments
+WandB integration for experiment logging
 
-WandB experiment tracking option
+Additional PettingZoo environments
 
-License
+Multi-run comparison interface
 
-MIT License.
-Feel free to use, modify, and build upon this project.
+More stable replay recording for large environments
+
+11. License
+
+This project is licensed under the MIT License.
+You are free to use, modify, and redistribute the code.
