@@ -53,6 +53,14 @@ python eval/evaluate.py \
 ```
 
 This will print average returns over a number of episodes.
+### Artifacts produced by evaluation
+
+Evaluation will create a folder under `runs/<run_name>/` containing:
+- `final_model.zip` — saved model checkpoint
+- `metrics.csv` — evaluation/training metrics (step, mean_reward, std_reward)
+- `replay.gif` — short replay GIF of a sample episode
+
+Streamlit uses those artifacts to show plots and replays automatically.
 
 ## Notes
 

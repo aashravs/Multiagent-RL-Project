@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 
 from envs.make_env import make_parallel_env
 from utils.config import load_config
@@ -29,6 +30,9 @@ def main():
     # while others follow random policies (see ppo_independent.make_independent_ppo_agents).
 
     for aid, model in agents.items():
+        if os.environ.get("NO_SAVE", "0") == "1":
+            model.save = lambda *a, **k: print(f"NO_SAVE=1 — skipping save for {aid}")
+            
         print(f"Training independent PPO for agent: {aid}")
         model.learn(total_timesteps=cfg.ppo.total_timesteps)
         model.save(f"{cfg.log_dir}/independent_{aid}")

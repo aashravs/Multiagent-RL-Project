@@ -41,6 +41,8 @@ def main():
         ent_coef=cfg.ppo.ent_coef,
         vf_coef=cfg.ppo.vf_coef,
     )
+    if os.environ.get("NO_SAVE", "0") == "1":
+        model.save = lambda *a, **k: print("NO_SAVE=1 — skipping model.save()")
 
     # NO CHECKPOINTS → prevents disk spam
     model.learn(
