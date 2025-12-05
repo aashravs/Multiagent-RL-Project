@@ -1,0 +1,26 @@
+﻿env:
+  env_name: pistonball_v6
+  frame_stack: 4
+  time_limit: 500
+  render_mode: none
+  num_envs: 1
+
+policy:
+  shared: true
+
+ppo:
+  total_timesteps: 500000
+  learning_rate: 0.0003
+  n_steps: 1024
+  batch_size: 256
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.2
+  ent_coef: 0.0
+  vf_coef: 0.5
+
+eval:
+  num_eval_episodes: 3
+  render: False
+  save_replay: True
+  replay_path: runs/{{run_name}}/replay.gif
